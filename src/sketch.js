@@ -23,13 +23,14 @@ const sketch = () => {
       let _x = x % h;
       let _y = Math.floor(x / h);
 
-      context.strokeStyle = "black";
+      const g = Math.random() * 255;
+      context.strokeStyle = `rgb(${g},${g},${g})`;
       context.beginPath();
       context.arc(
-        _x * rx + rx * 0.5,
-        _y * ry + ry * 0.5,
-        rx * 0.75,
-        rx * 0.75,
+        _x * rx + rx * 0.5 + (Math.random() * 6 - 3),
+        _y * ry + ry * 0.5 + (Math.random() * 6 - 3),
+        rx * 0.75 + (Math.random() * 6 - 3),
+        rx * 0.75 + (Math.random() * 6 - 3),
         0,
         Math.PI * 2,
         false
