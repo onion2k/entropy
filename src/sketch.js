@@ -1,4 +1,4 @@
-const canvasSketch = require("canvas-sketch");
+import canvasSketch from "canvas-sketch";
 
 const settings = {
   dimensions: "a4",
@@ -22,6 +22,7 @@ const sketch = () => {
       Math.PI * 2,
       false
     );
+
     context.stroke();
   };
 };
