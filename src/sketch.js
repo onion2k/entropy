@@ -11,19 +11,32 @@ const sketch = () => {
     context.fillStyle = "#f5f2e4";
     context.fillRect(0, 0, width, height);
 
-    context.strokeStyle = "black";
-    context.beginPath();
-    context.arc(
-      width * 0.5,
-      height * 0.5,
-      width * 0.25,
-      height * 0.25,
-      0,
-      Math.PI * 2,
-      false
-    );
+    let h = 10;
+    let v = 16;
 
-    context.stroke();
+    let rx = width / h;
+    let ry = height / v;
+
+    const i = h * v;
+
+    for (let x = 0; x < i; x++) {
+      let _x = x % h;
+      let _y = Math.floor(x / h);
+
+      context.strokeStyle = "black";
+      context.beginPath();
+      context.arc(
+        _x * rx + rx * 0.5,
+        _y * ry + ry * 0.5,
+        rx * 0.75,
+        rx * 0.75,
+        0,
+        Math.PI * 2,
+        false
+      );
+
+      context.stroke();
+    }
   };
 };
 
