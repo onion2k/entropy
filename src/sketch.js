@@ -8,7 +8,7 @@ const settings = {
 
 const sketch = () => {
   return ({ context, width, height }) => {
-    context.fillStyle = "pink";
+    context.fillStyle = "#f5f2e4";
     context.fillRect(0, 0, width, height);
 
     context.strokeStyle = "black";
