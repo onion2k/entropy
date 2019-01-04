@@ -13,7 +13,7 @@ const settings = {
 };
 
 const sketch = async ({ update }) => {
-  const img = await load("assets/spiderman.jpg");
+  const img = await load("assets/circles.jpg");
 
   let src = document.createElement("canvas");
 
@@ -41,7 +41,7 @@ const sketch = async ({ update }) => {
       src.height
     );
 
-    context.fillStyle = "#ffffff";
+    context.fillStyle = "#000000";
     context.fillRect(0, 0, width, height);
 
     let rx = width / h;
@@ -74,19 +74,19 @@ const sketch = async ({ update }) => {
       context.arc(
         _x * rx + rx * 0.5,
         _y * ry + ry * 0.5,
-        rx * 0.4,
+        rx * 0.5,
         n * Math.PI,
         n * Math.PI + Math.PI,
         false
       );
       context.fill();
 
-      context.fillStyle = `rgb(${r * 0.8},${g * 0.8},${b * 0.8})`;
+      context.fillStyle = `rgb(${255 * n},${255 * n},${255 * n})`;
       context.beginPath();
       context.arc(
         _x * rx + rx * 0.5,
         _y * ry + ry * 0.5,
-        rx * 0.4,
+        rx * 0.5,
         n * Math.PI,
         n * Math.PI + Math.PI,
         true
