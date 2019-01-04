@@ -5,7 +5,6 @@ const tooloud = require("tooloud/dist/tooloud.min");
 tooloud.Perlin.setSeed("onion");
 
 const settings = {
-  title: "Perlin Lines",
   dimensions: "a4",
   pixelsPerInch: 600,
   units: "mm"
@@ -56,6 +55,14 @@ const sketch = () => {
       );
       context.stroke();
     }
+
+    context.fillStyle = `rgb(255,255,255)`;
+    context.fillRect(width * 0.5 - 40, height - 2 - 5.5, 80, 7.5);
+
+    context.fillStyle = `rgb(0,0,0)`;
+    context.font = "5px Verdana";
+    context.textAlign = "center";
+    context.fillText("Hello world", width * 0.5, height - 2);
   };
 };
 
