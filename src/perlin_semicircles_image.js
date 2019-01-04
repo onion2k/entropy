@@ -13,7 +13,7 @@ const settings = {
 };
 
 const sketch = async ({ update }) => {
-  const img = await load("assets/lights.jpg");
+  const img = await load("assets/spiderman.jpg");
 
   let src = document.createElement("canvas");
 
@@ -23,7 +23,7 @@ const sketch = async ({ update }) => {
 
   return ({ context, width, height }) => {
     let nScale = 4;
-    let h = 200;
+    let h = 250;
     let v = Math.floor(h * (height / width));
 
     src.width = Math.floor((width / img.width) * h);
