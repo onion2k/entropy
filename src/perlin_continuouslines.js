@@ -24,13 +24,20 @@ const sketch = () => {
     let ry = height / v;
 
     const i = h * v;
-    const lineLength = 0.5;
-    context.lineWidth = 0.25;
+    context.lineWidth = 0.5;
     context.strokeStyle = `rgb(64,64,64)`;
+    context.beginPath();
 
     for (let x = 0; x < i; x++) {
       let _x = x % h;
       let _y = Math.floor(x / h);
+
+      if (_x === 0) {
+        // context.lineTo(h * rx, _y * ry + ry * 0.5);
+        context.stroke();
+        context.beginPath();
+        // context.moveTo(0, _y * ry + ry * 0.5);
+      }
 
       const n = math.clamp01(
         tooloud.Perlin.noise(
@@ -42,20 +49,19 @@ const sketch = () => {
         1
       );
 
-      const angle = n * Math.PI * 2;
+      const angle = n * (Math.PI * 2);
 
-      context.beginPath();
-      context.moveTo(
-        _x * rx + rx * 0.5 - Math.sin(angle) * lineLength,
-        _y * ry + ry * 0.5 - Math.cos(angle) * lineLength
-      );
-
+      //   context.moveTo(
+      //     _x * rx + rx * 0.5 - Math.sin(angle) * 0.75,
+      //     _y * ry + ry * 0.5 - Math.cos(angle) * 0.75
+      //   );
       context.lineTo(
-        _x * rx + rx * 0.5 + Math.sin(angle) * lineLength,
-        _y * ry + ry * 0.5 + Math.cos(angle) * lineLength
+        _x * rx + rx * 0.5 + Math.sin(angle) * 3,
+        _y * ry + ry * 0.5 + Math.cos(angle) * 3
       );
-      context.stroke();
     }
+
+    context.stroke();
   };
 };
 
