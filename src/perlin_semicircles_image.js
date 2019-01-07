@@ -2,18 +2,13 @@ import canvasSketch from "canvas-sketch";
 const math = require("canvas-sketch-util/math");
 const tooloud = require("../node_modules/tooloud/dist/tooloud.min.js");
 const load = require("load-asset");
-// const img = require("./images/lights.jpg");
 
 tooloud.Perlin.setSeed("onion");
 
-const settings = {
-  dimensions: "a4",
-  pixelsPerInch: 600,
-  units: "px"
-};
+const settings = {};
 
-const sketch = async ({ update }) => {
-  const img = await load("assets/circles.jpg");
+const sketch = ({ update }) => {
+  const img = settings.image;
 
   let src = document.createElement("canvas");
 
@@ -22,7 +17,7 @@ const sketch = async ({ update }) => {
   });
 
   return ({ context, width, height }) => {
-    let nScale = 4;
+    let noiseScale = 4;
     let h = 250;
     let v = Math.floor(h * (height / width));
 
@@ -55,8 +50,8 @@ const sketch = async ({ update }) => {
 
       const n = math.clamp01(
         tooloud.Perlin.noise(
-          (nScale * (1 + _x)) / h,
-          (nScale * (1 + _y)) / v,
+          (noiseScale * (1 + _x)) / h,
+          (noiseScale * (1 + _y)) / v,
           0
         ) + 0.4,
         0,
@@ -96,4 +91,22 @@ const sketch = async ({ update }) => {
   };
 };
 
-canvasSketch(sketch, settings);
+document.querySelector("body").addEventListener("dragover", e => {
+  e.preventDefault();
+});
+
+document.querySelector("body").addEventListener("drop", e => {
+  e.preventDefault();
+  if (e.dataTransfer.files) {
+    if (e.dataTransfer.files[0]) {
+      let reader = new FileReader();
+      reader.readAsDataURL(e.dataTransfer.files[0]);
+      reader.onloadend = function() {
+        let img = document.createElement("img");
+        img.src = reader.result;
+        settings.image = img;
+        canvasSketch(sketch, settings);
+      };
+    }
+  }
+});
