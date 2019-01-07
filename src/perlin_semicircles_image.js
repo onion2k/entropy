@@ -1,19 +1,18 @@
 import canvasSketch from "canvas-sketch";
 const math = require("canvas-sketch-util/math");
 const tooloud = require("../node_modules/tooloud/dist/tooloud.min.js");
-const load = require("load-asset");
 
 tooloud.Perlin.setSeed("onion");
 
-const settings = {};
+const settings = {
+  canvas: document.querySelector("#parent")
+};
 
 const sketch = ({ update }) => {
-  const img = settings.image;
-
   let src = document.createElement("canvas");
 
   update({
-    dimensions: [img.width, img.height]
+    dimensions: [settings.image.width, settings.image.height]
   });
 
   return ({ context, width, height }) => {
@@ -21,15 +20,15 @@ const sketch = ({ update }) => {
     let h = 250;
     let v = Math.floor(h * (height / width));
 
-    src.width = Math.floor((width / img.width) * h);
-    src.height = Math.floor((height / img.height) * v);
+    src.width = Math.floor((width / settings.image.width) * h);
+    src.height = Math.floor((height / settings.image.height) * v);
     const srcContext = src.getContext("2d");
     srcContext.drawImage(
-      img,
+      settings.image,
       0,
       0,
-      img.width,
-      img.height,
+      settings.image.width,
+      settings.image.height,
       0,
       0,
       src.width,
