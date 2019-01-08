@@ -1,14 +1,16 @@
-import canvasSketch from "canvas-sketch";
+import canvasSketch from "../../canvas-sketch/dist/canvas-sketch.umd";
 const math = require("canvas-sketch-util/math");
 const tooloud = require("../node_modules/tooloud/dist/tooloud.min.js");
 
 tooloud.Perlin.setSeed("onion");
 
-const settings = {
-  canvas: document.querySelector("#parent")
-};
+const settings = {};
 
 const sketch = ({ update }) => {
+  if (!settings.image) {
+    return;
+  }
+
   let src = document.createElement("canvas");
 
   update({
@@ -90,6 +92,8 @@ const sketch = ({ update }) => {
   };
 };
 
+let sketchManager = canvasSketch(sketch);
+
 document.querySelector("body").addEventListener("dragover", e => {
   e.preventDefault();
 });
@@ -104,7 +108,10 @@ document.querySelector("body").addEventListener("drop", e => {
         let img = document.createElement("img");
         img.src = reader.result;
         settings.image = img;
-        canvasSketch(sketch, settings);
+        // canvasSketch(sketch, settings);
+        sketchManager.then(s => {
+          s.loadAndRun(sketch, settings);
+        });
       };
     }
   }
