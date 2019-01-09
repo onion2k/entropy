@@ -16,33 +16,34 @@ const sketch = () => {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
 
-    let nScale = 4;
-    let h = 100;
+    let noiseScale = 3;
+    let vScale = 4;
+    let h = 200;
     let v = Math.floor(h * (height / width));
+    let lineWidth = 0.5;
+    let overdraw = 180;
 
     let rx = width / h;
     let ry = height / v;
 
-    const i = h * v;
-    context.lineWidth = 0.5;
+    const i = (h + overdraw / 2) * (v + overdraw / 2);
+    context.lineWidth = lineWidth;
     context.strokeStyle = `rgb(64,64,64)`;
     context.beginPath();
 
     for (let x = 0; x < i; x++) {
-      let _x = x % h;
-      let _y = Math.floor(x / h);
+      let _x = x % (h + overdraw / 2);
+      let _y = Math.floor(x / (h + overdraw / 2));
 
       if (_x === 0) {
-        // context.lineTo(h * rx, _y * ry + ry * 0.5);
         context.stroke();
         context.beginPath();
-        // context.moveTo(0, _y * ry + ry * 0.5);
       }
 
       const n = math.clamp01(
         tooloud.Perlin.noise(
-          (nScale * (1 + _x)) / h,
-          (nScale * (1 + _y)) / v,
+          (noiseScale * (1 + _x)) / h,
+          (noiseScale * (1 + _y)) / v,
           0
         ) + 0.4,
         0,
@@ -51,13 +52,15 @@ const sketch = () => {
 
       const angle = n * (Math.PI * 2);
 
-      //   context.moveTo(
-      //     _x * rx + rx * 0.5 - Math.sin(angle) * 0.75,
-      //     _y * ry + ry * 0.5 - Math.cos(angle) * 0.75
-      //   );
+      if (x === 1) {
+        console.log(
+          (-1 * overdraw) / 2 + _x * rx + rx * 0.5 + Math.sin(angle) * vScale
+        );
+      }
+
       context.lineTo(
-        _x * rx + rx * 0.5 + Math.sin(angle) * 3,
-        _y * ry + ry * 0.5 + Math.cos(angle) * 3
+        (-1 * overdraw) / 2 + _x * rx + rx * 0.5 + Math.sin(angle) * vScale,
+        (-1 * overdraw) / 2 + _y * ry + ry * 0.5 + Math.cos(angle) * vScale
       );
     }
 
@@ -65,4 +68,26 @@ const sketch = () => {
   };
 };
 
-canvasSketch(sketch, settings);
+let sketchManager = canvasSketch(sketch, settings);
+
+document.querySelector("body").addEventListener("dragover", e => {
+  e.preventDefault();
+});
+
+document.querySelector("body").addEventListener("drop", e => {
+  e.preventDefault();
+  if (e.dataTransfer.files) {
+    if (e.dataTransfer.files[0]) {
+      let reader = new FileReader();
+      reader.readAsDataURL(e.dataTransfer.files[0]);
+      reader.onloadend = function() {
+        let img = document.createElement("img");
+        img.src = reader.result;
+        settings.image = img;
+        sketchManager.then(s => {
+          s.loadAndRun(sketch, settings);
+        });
+      };
+    }
+  }
+});

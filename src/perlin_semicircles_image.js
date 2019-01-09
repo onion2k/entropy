@@ -12,12 +12,13 @@ const sketch = ({ update }) => {
   }
 
   const src = document.createElement("canvas");
-  const scale = 15;
   const h = 250;
   const noiseScale = 4;
 
   update({
-    dimensions: [settings.image.width * scale, settings.image.height * scale]
+    dimensions: "a4",
+    pixelsPerInch: 600,
+    units: "px"
   });
 
   return ({ context, width, height }) => {
@@ -26,6 +27,7 @@ const sketch = ({ update }) => {
     src.width = h;
     src.height = v;
 
+    // This should scale and crop to the correct center portion in x or y
     const srcContext = src.getContext("2d");
     srcContext.drawImage(
       settings.image,
@@ -39,7 +41,7 @@ const sketch = ({ update }) => {
       src.height
     );
 
-    context.fillStyle = "#000000";
+    context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
 
     let rx = width / h;
