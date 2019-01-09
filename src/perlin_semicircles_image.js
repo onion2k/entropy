@@ -112,7 +112,6 @@ document.querySelector("body").addEventListener("drop", e => {
         let img = document.createElement("img");
         img.src = reader.result;
         settings.image = img;
-        // canvasSketch(sketch, settings);
         sketchManager.then(s => {
           s.loadAndRun(sketch, settings);
         });
