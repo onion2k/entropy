@@ -6,8 +6,8 @@ tooloud.Perlin.setSeed("onion");
 
 const settings = {
   title: "Perlin Lines",
-  dimensions: "a4",
-  pixelsPerInch: 600,
+  dimensions: "a3",
+  pixelsPerInch: 300,
   units: "mm"
 };
 
@@ -16,12 +16,12 @@ const sketch = () => {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
 
-    let noiseScale = 3;
-    let vScale = 4;
+    let noiseScale = 4;
+    let vScale = 7;
     let h = 200;
     let v = Math.floor(h * (height / width));
-    let lineWidth = 0.5;
-    let overdraw = 180;
+    let lineWidth = 0.4;
+    let overdraw = 500;
 
     let rx = width / h;
     let ry = height / v;
@@ -51,12 +51,6 @@ const sketch = () => {
       );
 
       const angle = n * (Math.PI * 2);
-
-      if (x === 1) {
-        console.log(
-          (-1 * overdraw) / 2 + _x * rx + rx * 0.5 + Math.sin(angle) * vScale
-        );
-      }
 
       context.lineTo(
         (-1 * overdraw) / 2 + _x * rx + rx * 0.5 + Math.sin(angle) * vScale,
