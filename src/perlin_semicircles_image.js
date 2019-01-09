@@ -11,19 +11,21 @@ const sketch = ({ update }) => {
     return;
   }
 
-  let src = document.createElement("canvas");
+  const src = document.createElement("canvas");
+  const scale = 15;
+  const h = 250;
+  const noiseScale = 4;
 
   update({
-    dimensions: [settings.image.width, settings.image.height]
+    dimensions: [settings.image.width * scale, settings.image.height * scale]
   });
 
   return ({ context, width, height }) => {
-    let noiseScale = 4;
-    let h = 250;
     let v = Math.floor(h * (height / width));
 
-    src.width = Math.floor((width / settings.image.width) * h);
-    src.height = Math.floor((height / settings.image.height) * v);
+    src.width = h;
+    src.height = v;
+
     const srcContext = src.getContext("2d");
     srcContext.drawImage(
       settings.image,
