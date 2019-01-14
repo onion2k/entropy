@@ -8,7 +8,6 @@ const colorPerlin = tooloud.Perlin.create("color");
 const settings = {
   dimensions: [800, 800],
   animate: true,
-  totalFrames: 251,
   fps: 60
 };
 
@@ -18,17 +17,18 @@ const sketch = () => {
     context.fillRect(0, 0, width, height);
 
     let nScale = 2;
+    let rSpeed = 0.025;
+    let rSpeed2 = 0.05;
+    const lineLength = 16;
+    const lineWidth = 2.0;
     let h = 50;
     let v = Math.floor(h * (height / width));
 
     let rx = width / h;
     let ry = height / v;
 
-    let rSpeed = 0.025;
-
     const i = h * v;
-    const lineLength = 10;
-    context.lineWidth = 1.8;
+    context.lineWidth = lineWidth;
 
     for (let x = 0; x < i; x++) {
       let _x = x % h;
@@ -44,7 +44,13 @@ const sketch = () => {
         1
       );
 
-      const angle = n * Math.PI * 2;
+      const a = n * Math.PI * 2;
+      const sinAngle = Math.sin(a + frame * rSpeed) * lineLength;
+      const cosAngle = Math.cos(a + frame * rSpeed) * lineLength;
+
+      // const a2 = n * Math.PI * 2 * 2;
+      const sinAngle2 = Math.sin(a + frame * rSpeed2 * n) * lineLength;
+      const cosAngle2 = Math.cos(a + frame * rSpeed2 * n) * lineLength;
 
       context.beginPath();
       context.moveTo(_x * rx, _y * ry);
@@ -52,9 +58,10 @@ const sketch = () => {
       let hue = 256 * n;
       context.strokeStyle = `hsl(${hue},100%,50%)`;
 
+      context.lineTo(_x * rx + sinAngle, _y * ry + cosAngle);
       context.lineTo(
-        _x * rx + Math.sin(angle + frame * rSpeed) * lineLength,
-        _y * ry + Math.cos(angle + frame * rSpeed) * lineLength
+        _x * rx + sinAngle + sinAngle2,
+        _y * ry + cosAngle + cosAngle2
       );
       context.stroke();
     }
