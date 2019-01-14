@@ -6,19 +6,19 @@ tooloud.Perlin.setSeed("onion");
 
 const settings = {
   dimensions: [800, 800],
-  animate: true
+  animate: true,
+  fps: 60
 };
 
 const sketch = () => {
-  return ({ context, width, height, frame }) => {
+  return ({ context, width, height, time }) => {
     context.fillStyle = "#ffffff";
     context.fillRect(0, 0, width, height);
 
-    let h = 15;
+    let h = 12;
     let v = Math.floor(h * (height / width));
 
     let nScale = 2;
-    let rSpeed = 1 / (12 * 60 * 60);
     const lineLength = (width / h) * 0.5;
     const lineWidth = 3.0;
 
@@ -50,15 +50,17 @@ const sketch = () => {
       let bX = 2 * Math.PI * n;
       let bY = 2 * Math.PI * n;
 
-      const hX = Math.cos(bX + frame * rSpeed * 1) * lineLength * 0.8;
-      const hY = Math.sin(bY + frame * rSpeed * 1) * lineLength * 0.8;
+      let timeRads = time * 360 * 0.0174533;
+
+      const hX = Math.cos(bX + timeRads / 360) * lineLength * 0.8;
+      const hY = Math.sin(bY + timeRads / 360) * lineLength * 0.8;
       context.beginPath();
       context.moveTo(pX, pY);
       context.lineTo(pX + hX, pY + hY);
       context.stroke();
 
-      const mX = Math.cos(bX + frame * rSpeed * 60) * lineLength;
-      const mY = Math.sin(bY + frame * rSpeed * 60) * lineLength;
+      const mX = Math.cos(bX + timeRads / 60) * lineLength;
+      const mY = Math.sin(bY + timeRads / 60) * lineLength;
       context.beginPath();
       context.moveTo(pX, pY);
       context.lineTo(pX + mX, pY + mY);
@@ -66,8 +68,8 @@ const sketch = () => {
 
       context.lineWidth = lineWidth * 0.5;
 
-      const sX = Math.cos(bX + frame * rSpeed * 360) * lineLength;
-      const sY = Math.sin(bY + frame * rSpeed * 360) * lineLength;
+      const sX = Math.cos(bX + timeRads) * lineLength;
+      const sY = Math.sin(bY + timeRads) * lineLength;
       context.beginPath();
       context.moveTo(pX, pY);
       context.lineTo(pX + sX, pY + sY);
