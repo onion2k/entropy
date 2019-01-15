@@ -58,16 +58,6 @@ canvasSketch(async ({ update }) => {
       let _x = x % h;
       let _y = Math.floor(x / h);
 
-      // const n = math.clamp01(
-      //   tooloud.Perlin.noise(
-      //     (noiseScale * (1 + _x)) / h,
-      //     (noiseScale * (1 + _y)) / v,
-      //     0
-      //   ) + 0.4,
-      //   0,
-      //   1
-      // );
-
       const n = pixels.data[(_x * rx + _y * ry * width) * 4] / 255;
 
       context.lineWidth = lineWidth;
