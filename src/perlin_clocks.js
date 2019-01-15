@@ -72,7 +72,7 @@ canvasSketch(async ({ update }) => {
 
       context.lineWidth = lineWidth;
       context.strokeStyle = `hsl(0,100%,0%)`;
-      context.fillStyle = `hsl(${100 * n},100%,50%)`;
+      context.fillStyle = `hsl(0,0%,${100 * (1 - n)}%)`;
 
       let pX = _x * rx + rx * 0.5;
       let pY = _y * ry + rx * 0.5;
