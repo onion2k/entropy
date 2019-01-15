@@ -7,6 +7,7 @@ tooloud.Perlin.setSeed("onion");
 
 const settings = {
   dimensions: [800, 800],
+  pixelated: true,
   animate: false,
   fps: 60
 };
@@ -16,9 +17,23 @@ canvasSketch(async ({ update }) => {
 
   return ({ context, width, height, time }) => {
     let canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
+    canvas.style.imageRendering = "pixelated";
+
+    let h = 25;
+    let v = Math.floor(h * (height / width));
+    let noiseScale = 2;
+    const lineLength = (width / h) * 0.5;
+    const lineWidth = 3.0;
+
+    let rx = Math.floor(width / h);
+    let ry = Math.floor(height / v);
+
+    const i = rx * ry;
+
+    canvas.width = rx;
+    canvas.height = ry;
     const canvasContext = canvas.getContext("2d");
+    canvasContext.imageSmoothingEnabled = false;
     canvasContext.drawImage(
       image,
       0,
@@ -27,26 +42,16 @@ canvasSketch(async ({ update }) => {
       image.height,
       0,
       0,
-      width,
-      height
+      rx,
+      ry
     );
 
     // Extract bitmap pixel data
-    const pixels = canvasContext.getImageData(0, 0, width, height);
-
-    let h = 25;
-    let v = Math.floor(h * (height / width));
-    let noiseScale = 2;
-    const lineLength = (width / h) * 0.5;
-    const lineWidth = 3.0;
-
-    let rx = width / h;
-    let ry = height / v;
-
-    const i = h * v;
+    const pixels = canvasContext.getImageData(0, 0, rx, ry);
 
     try {
-      context.drawImage(canvas, 0, 0, width, height, 0, 0, width, height);
+      context.imageSmoothingEnabled = false;
+      context.drawImage(canvas, 0, 0, rx, ry, 0, 0, width, height);
     } catch (e) {
       console.log(e);
     }
@@ -55,20 +60,20 @@ canvasSketch(async ({ update }) => {
     // context.fillRect(0, 0, width, height);
 
     for (let x = 0; x < i; x++) {
-      let _x = x % h;
-      let _y = Math.floor(x / h);
+      let _x = x % rx;
+      let _y = Math.floor(x / ry);
 
-      const n = pixels.data[(_x * rx + _y * ry * width) * 4] / 255;
+      const n = pixels.data[Math.floor(_x + _y * rx) * 4] / 255;
 
       context.lineWidth = lineWidth;
       context.strokeStyle = `hsl(0,100%,0%)`;
-      context.fillStyle = `hsl(0,0%,${100 * (1 - n)}%)`;
+      context.fillStyle = `hsl(0,0%,${100 * (1 - Math.floor(n))}%)`;
 
-      let pX = _x * rx + rx * 0.5;
-      let pY = _y * ry + rx * 0.5;
+      let pX = _x * h + rx * 0.5;
+      let pY = _y * v + rx * 0.5;
 
       context.beginPath();
-      context.arc(pX, pY, 3, 0, Math.PI * 2, true);
+      context.arc(pX, pY, 6, 0, Math.PI * 2, true);
       context.fill();
 
       // let bX = 2 * Math.PI * n;
