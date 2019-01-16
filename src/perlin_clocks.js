@@ -13,7 +13,7 @@ const settings = {
 };
 
 canvasSketch(async ({ update }) => {
-  const image = await loadAsset("assets/pineapple.jpg");
+  const image = await loadAsset("assets/wine.svg");
 
   return ({ context, width, height, time }) => {
     let canvas = document.createElement("canvas");
@@ -25,52 +25,36 @@ canvasSketch(async ({ update }) => {
     const lineLength = (width / h) * 0.5;
     const lineWidth = 3.0;
 
-    let rx = Math.floor(width / h);
-    let ry = Math.floor(height / v);
+    const i = h * v;
 
-    const i = rx * ry;
-
-    canvas.width = rx;
-    canvas.height = ry;
+    canvas.width = h;
+    canvas.height = v;
     const canvasContext = canvas.getContext("2d");
     canvasContext.imageSmoothingEnabled = false;
-    canvasContext.drawImage(
-      image,
-      0,
-      0,
-      image.width,
-      image.height,
-      0,
-      0,
-      rx,
-      ry
-    );
+    canvasContext.drawImage(image, 0, 0, image.width, image.height, 0, 0, h, v);
 
     // Extract bitmap pixel data
-    const pixels = canvasContext.getImageData(0, 0, rx, ry);
+    const pixels = canvasContext.getImageData(0, 0, h, v);
 
     try {
       context.imageSmoothingEnabled = false;
-      context.drawImage(canvas, 0, 0, rx, ry, 0, 0, width, height);
+      context.drawImage(canvas, 0, 0, h, v, 0, 0, width, height);
     } catch (e) {
       console.log(e);
     }
 
-    // context.fillStyle = "#ffffff";
-    // context.fillRect(0, 0, width, height);
-
     for (let x = 0; x < i; x++) {
-      let _x = x % rx;
-      let _y = Math.floor(x / ry);
+      let _x = x % h;
+      let _y = Math.floor(x / v);
 
-      const n = pixels.data[Math.floor(_x + _y * rx) * 4] / 255;
+      const n = pixels.data[Math.floor(_x + _y * v) * 4] / 255;
 
       context.lineWidth = lineWidth;
       context.strokeStyle = `hsl(0,100%,0%)`;
-      context.fillStyle = `hsl(0,0%,${100 * (1 - Math.floor(n))}%)`;
+      context.fillStyle = `hsl(0,0%,${50 * (1 - Math.floor(n))}%)`;
 
-      let pX = _x * h + rx * 0.5;
-      let pY = _y * v + rx * 0.5;
+      let pX = _x * h + h * 0.5;
+      let pY = _y * v + v * 0.5;
 
       context.beginPath();
       context.arc(pX, pY, 6, 0, Math.PI * 2, true);
