@@ -1,4 +1,5 @@
 const loadAsset = require("load-asset");
+
 export default class sketchImage {
   constructor(url) {
     this.img = null;
@@ -8,8 +9,7 @@ export default class sketchImage {
     if (url) {
       return (async () => {
         await this.load(url);
-        console.log(this.img);
-        return this; // when done
+        return this;
       })();
     } else {
       return this;
