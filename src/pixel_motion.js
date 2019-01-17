@@ -4,7 +4,7 @@ import sketchImage from "./lib/sketchImage";
 const settings = {
   dimensions: [800, 800],
   pixelated: true,
-  animate: false,
+  animate: true,
   fps: 60
 };
 
@@ -17,6 +17,8 @@ canvasSketch(async ({ update }) => {
   const pixels = image.data;
 
   return ({ context, width, height, time }) => {
+    context.fillStyle = "#fff";
+    context.fillRect(0, 0, width, height);
     for (let counter = 0; counter < i; counter++) {
       const _x = counter % x;
       const _y = Math.floor(counter / y);
@@ -24,11 +26,11 @@ canvasSketch(async ({ update }) => {
 
       context.fillStyle = `hsl(0,100%,${50 * Math.floor(n)}%)`;
 
-      const pX = _x * (width / x) + x * 0.5;
-      const pY = _y * (height / y) + y * 0.5;
+      const pX = _x * (width / x) + x * 0.5 + (Math.cos(x + time) * 20.0 - 10);
+      const pY = _y * (height / y) + y * 0.5 + (Math.cos(y + time) * 20.0 - 10);
 
       context.beginPath();
-      context.arc(pX, pY, 4, 0, Math.PI * 2, true);
+      context.arc(pX, pY, 5, 0, Math.PI * 2, true);
       context.fill();
     }
   };
