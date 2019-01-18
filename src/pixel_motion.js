@@ -13,7 +13,7 @@ function inout(t) {
 }
 
 canvasSketch(async ({ update }) => {
-  const image = await new sketchImage("assets/wine.svg");
+  const image = await new sketchImage("assets/tris.png");
   let x = 50;
   let y = 50;
   let i = x * y;
@@ -26,9 +26,9 @@ canvasSketch(async ({ update }) => {
     for (let counter = 0; counter < i; counter++) {
       const _x = counter % x;
       const _y = Math.floor(counter / y);
-      const n = pixels.data[3 + counter * 4] / 255;
+      const n = pixels.data[2 + counter * 4] / 255;
 
-      context.fillStyle = `hsl(0,100%,${50 * Math.floor(n)}%)`;
+      context.fillStyle = `hsl(${255 * n},100%,50%)`;
 
       // console.log(time, time / x);
 
