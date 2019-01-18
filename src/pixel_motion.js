@@ -32,8 +32,14 @@ canvasSketch(async ({ update }) => {
 
       // console.log(time, time / x);
 
-      const pX = _x * (width / (x + 0.5)) + x * 0.25;
-      const pY = _y * (height / (y + 0.5)) + y * 0.25;
+      const pX =
+        _x * (width / (x + 0.5)) +
+        x * 0.25 +
+        Math.sin(frame / 18 + _y * 0.1) * 10;
+      const pY =
+        _y * (height / (y + 0.5)) +
+        y * 0.25 +
+        Math.cos(frame / 18 + _y * 0.1) * 10;
 
       context.beginPath();
       context.arc(
